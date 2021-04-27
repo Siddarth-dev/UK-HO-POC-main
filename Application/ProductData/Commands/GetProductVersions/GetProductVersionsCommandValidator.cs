@@ -12,8 +12,10 @@ namespace Application.ProductData.Commands.GetProductVersions
         {
             RuleFor(v => v.CallbackUri).NotNull().When(v => !string.IsNullOrEmpty(v.CallbackUri)).Matches(@"^http(s)?://([\w-]+.)+[\w-]+(/[\w- ./?%&=])?$");
             RuleFor(v => v.ProductVersions).NotNull().NotEmpty();
+
             // RuleFor(v => v.ProductVersions).Must(x => !IsDuplicate(x))
             // .WithMessage("The item with values has duplicates in collection of items");
+            
             RuleFor(x => x.ProductVersions)
             .Must(coll => coll.Distinct(new SubEntityComparer()).Count() == coll.Count)
             .WithMessage("One or more items in collection of items are duplicates");
